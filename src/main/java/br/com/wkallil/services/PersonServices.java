@@ -1,6 +1,7 @@
 package br.com.wkallil.services;
 
 
+import br.com.wkallil.data.dto.PersonDTO;
 import br.com.wkallil.exceptions.ResourceNotFoundException;
 import br.com.wkallil.mapper.PersonMapper;
 import br.com.wkallil.models.Person;
@@ -18,24 +19,26 @@ public class PersonServices {
     private final Logger logger = LoggerFactory.getLogger(PersonServices.class.getName());
 
     @Autowired
-    PersonRepository repository;
+    private PersonRepository repository;
 
     @Autowired
-    PersonMapper personMapper;
+    private PersonMapper personMapper;
 
-    public Person findById(Long id) {
+    public PersonDTO findById(Long id) {
         logger.info("Finding one person!");
-
-        return repository.findById(id)
+        Person person =  repository.findById(id)
                 .orElseThrow(
                         () -> new ResourceNotFoundException("No records found for this ID!")
                 );
+
+        return personMapper.toDto(person);
     }
 
-    public List<Person> findAll() {
+    public List<PersonDTO> findAll() {
         logger.info("Finding all people!");
+        var people = repository.findAll();
 
-        return repository.findAll();
+        return personMapper.toDtoList(people);
     }
 
     public void delete(Long id) {
@@ -48,13 +51,14 @@ public class PersonServices {
         repository.delete(person);
     }
 
-    public Person create(Person person) {
+    public PersonDTO create(PersonDTO person) {
         logger.info("Creating one person!");
 
-        return repository.save(person);
+        Person entity = personMapper.toEntity(person);
+        return personMapper.toDto(repository.save(entity));
     }
 
-    public Person update(Person person) {
+    public PersonDTO update(PersonDTO person) {
         logger.info("Updating one person!");
 
         Person entity = repository.findById(person.getId())
@@ -62,11 +66,12 @@ public class PersonServices {
                         () -> new ResourceNotFoundException("No records found for this ID!")
                 );
 
+
         entity.setFirstName(person.getFirstName());
         entity.setLastName(person.getLastName());
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return repository.save(person);
+        return personMapper.toDto(repository.save(entity));
     }
 }
