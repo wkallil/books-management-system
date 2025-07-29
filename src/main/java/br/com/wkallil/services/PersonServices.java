@@ -2,6 +2,7 @@ package br.com.wkallil.services;
 
 
 import br.com.wkallil.exceptions.ResourceNotFoundException;
+import br.com.wkallil.mapper.PersonMapper;
 import br.com.wkallil.models.Person;
 import br.com.wkallil.repositories.PersonRepository;
 import org.slf4j.Logger;
@@ -19,6 +20,8 @@ public class PersonServices {
     @Autowired
     PersonRepository repository;
 
+    @Autowired
+    PersonMapper personMapper;
 
     public Person findById(Long id) {
         logger.info("Finding one person!");
