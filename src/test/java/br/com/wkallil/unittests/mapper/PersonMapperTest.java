@@ -66,14 +66,14 @@ public class PersonMapperTest {
         assertNotNull(result);
         assertEquals(14, result.size());
         
-        PersonDTO targetDto = result.get(0);
+        PersonDTO targetDto = result.getFirst();
         
         assertNotNull(targetDto);
-        assertEquals(entityList.get(0).getId(), targetDto.getId());
-        assertEquals(entityList.get(0).getFirstName(), targetDto.getFirstName());
-        assertEquals(entityList.get(0).getLastName(), targetDto.getLastName());
-        assertEquals(entityList.get(0).getAddress(), targetDto.getAddress());
-        assertEquals(entityList.get(0).getGender(), targetDto.getGender());
+        assertEquals(entityList.getFirst().getId(), targetDto.getId());
+        assertEquals(entityList.getFirst().getFirstName(), targetDto.getFirstName());
+        assertEquals(entityList.getFirst().getLastName(), targetDto.getLastName());
+        assertEquals(entityList.getFirst().getAddress(), targetDto.getAddress());
+        assertEquals(entityList.getFirst().getGender(), targetDto.getGender());
     }
 
     @Test
@@ -84,13 +84,13 @@ public class PersonMapperTest {
         assertNotNull(result);
         assertEquals(14, result.size());
         
-        Person targetEntity = result.get(0);
+        Person targetEntity = result.getFirst();
         
         assertNotNull(targetEntity);
-        assertEquals(dtoList.get(0).getId(), targetEntity.getId());
-        assertEquals(dtoList.get(0).getFirstName(), targetEntity.getFirstName());
-        assertEquals(dtoList.get(0).getLastName(), targetEntity.getLastName());
-        assertEquals(dtoList.get(0).getAddress(), targetEntity.getAddress());
-        assertEquals(dtoList.get(0).getGender(), targetEntity.getGender());
+        assertEquals(dtoList.getFirst().getId(), targetEntity.getId());
+        assertEquals(dtoList.getFirst().getFirstName(), targetEntity.getFirstName());
+        assertEquals(dtoList.getFirst().getLastName(), targetEntity.getLastName());
+        assertEquals(dtoList.getFirst().getAddress(), targetEntity.getAddress());
+        assertEquals(dtoList.getFirst().getGender(), targetEntity.getGender());
     }
 }
