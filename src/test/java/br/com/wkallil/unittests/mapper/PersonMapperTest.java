@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import br.com.wkallil.data.dto.PersonDTO;
+import br.com.wkallil.data.dto.v1.PersonDTO;
 import br.com.wkallil.mapper.PersonMapper;
 import br.com.wkallil.mapper.PersonMapperImpl;
 import br.com.wkallil.models.Person;

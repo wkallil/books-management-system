@@ -1,6 +1,6 @@
 package br.com.wkallil.mapper;
 
-import br.com.wkallil.data.dto.PersonDTO;
+import br.com.wkallil.data.dto.v1.PersonDTO;
 import br.com.wkallil.models.Person;
 import org.mapstruct.Mapper;
 

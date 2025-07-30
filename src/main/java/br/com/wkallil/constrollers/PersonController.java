@@ -1,6 +1,6 @@
 package br.com.wkallil.constrollers;
 
-import br.com.wkallil.data.dto.PersonDTO;
+import br.com.wkallil.data.dto.v1.PersonDTO;
 import br.com.wkallil.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/v1/person")
 public class PersonController {
 
     @Autowired

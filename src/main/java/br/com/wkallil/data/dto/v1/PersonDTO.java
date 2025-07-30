@@ -1,4 +1,4 @@
-package br.com.wkallil.data.dto;
+package br.com.wkallil.data.dto.v1;
 
 
 import java.io.Serializable;

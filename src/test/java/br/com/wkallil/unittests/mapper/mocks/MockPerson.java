@@ -3,7 +3,7 @@ package br.com.wkallil.unittests.mapper.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.wkallil.data.dto.PersonDTO;
+import br.com.wkallil.data.dto.v1.PersonDTO;
 import br.com.wkallil.models.Person;
 
 public class MockPerson {

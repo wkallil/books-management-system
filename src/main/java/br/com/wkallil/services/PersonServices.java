@@ -1,7 +1,7 @@
 package br.com.wkallil.services;
 
 
-import br.com.wkallil.data.dto.PersonDTO;
+import br.com.wkallil.data.dto.v1.PersonDTO;
 import br.com.wkallil.exceptions.ResourceNotFoundException;
 import br.com.wkallil.mapper.PersonMapper;
 import br.com.wkallil.models.Person;
