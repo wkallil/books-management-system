@@ -3,6 +3,7 @@ package br.com.wkallil.services;
 
 import br.com.wkallil.constrollers.PersonController;
 import br.com.wkallil.data.dto.v1.PersonDTO;
+import br.com.wkallil.exceptions.RequiredObjectIsNullException;
 import br.com.wkallil.exceptions.ResourceNotFoundException;
 import br.com.wkallil.mapper.PersonMapper;
 import br.com.wkallil.models.Person;
@@ -60,6 +61,12 @@ public class PersonServices {
     }
 
     public PersonDTO create(PersonDTO person) {
+
+        if (person == null) {
+            logger.info("Person is null!");
+            throw new RequiredObjectIsNullException();
+        }
+
         logger.info("Creating one person!");
 
         Person entity = personMapper.toEntity(person);
@@ -69,6 +76,12 @@ public class PersonServices {
     }
 
     public PersonDTO update(PersonDTO person) {
+
+        if (person == null) {
+            logger.info("Person is null!");
+            throw new RequiredObjectIsNullException();
+        }
+
         logger.info("Updating one person!");
 
         Person entity = repository.findById(person.getId())
