@@ -1,7 +1,9 @@
 package br.com.wkallil.constrollers;
 
+import br.com.wkallil.constrollers.docs.PersonControllerDocs;
 import br.com.wkallil.data.dto.v1.PersonDTO;
 import br.com.wkallil.services.PersonServices;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/person")
-public class PersonController {
+@Tag(name = "People", description = "Endpoints for managing people")
+public class PersonController implements PersonControllerDocs {
 
     @Autowired
     private PersonServices services;
@@ -24,16 +27,19 @@ public class PersonController {
                     MediaType.APPLICATION_YAML_VALUE
             }
     )
+    @Override
     public PersonDTO findById(@PathVariable("id") Long id) {
         return services.findById(id);
     }
 
-    @GetMapping(produces = {
-            MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_YAML_VALUE
-    }
+    @GetMapping(value = "/all",
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE
+            }
     )
+    @Override
     public List<PersonDTO> findAll() {
         return services.findAll();
     }
@@ -51,6 +57,7 @@ public class PersonController {
                     MediaType.APPLICATION_YAML_VALUE
             }
     )
+    @Override
     public PersonDTO create(@RequestBody PersonDTO person) {
         return services.create(person);
     }
@@ -68,11 +75,13 @@ public class PersonController {
                     MediaType.APPLICATION_YAML_VALUE
             }
     )
+    @Override
     public PersonDTO update(@RequestBody PersonDTO person) {
         return services.update(person);
     }
 
     @DeleteMapping(value = "/delete/{id}")
+    @Override
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         services.delete(id);
         return ResponseEntity.noContent().build();
