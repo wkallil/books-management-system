@@ -43,9 +43,9 @@ public class BooksServices {
 
     public List<BooksDTO> findAll() {
         logger.info("Finding all Books!");
-        var people = repository.findAll();
+        var books = repository.findAll();
 
-        var dto = booksMapper.toDtoList(people);
+        var dto = booksMapper.toDtoList(books);
         dto.forEach(this::addHateoasLinks);
         return dto;
     }
