@@ -2,7 +2,7 @@ package br.com.wkallil.constrollers;
 
 import br.com.wkallil.constrollers.docs.BooksControllerDocs;
 import br.com.wkallil.data.dto.v1.BooksDTO;
-import br.com.wkallil.services.BooksServices;
+import br.com.wkallil.unittests.services.BooksServices;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
