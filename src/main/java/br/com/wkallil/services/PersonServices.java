@@ -39,7 +39,7 @@ public class PersonServices {
 
     public PersonDTO findById(Long id) {
         logger.info("Finding one person!");
-        Person person =  repository.findById(id)
+        Person person = repository.findById(id)
                 .orElseThrow(
                         () -> new ResourceNotFoundException("No records found for this ID!")
                 );
@@ -61,12 +61,35 @@ public class PersonServices {
         });
 
         Link findAllLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(
-                PersonController.class)
-                .findAll(
-                        pageable.getPageNumber(),
-                        pageable.getPageSize(),
-                        String.valueOf(pageable.getSort())
+                                PersonController.class)
+                        .findAll(
+                                pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                String.valueOf(pageable.getSort())
+                        )
                 )
+                .withSelfRel();
+        return assembler.toModel(peopleWithLinks, findAllLink);
+    }
+
+    public PagedModel<EntityModel<PersonDTO>> findPeopleByName(String firstName, Pageable pageable) {
+        logger.info("Finding People by name!");
+
+        var peoplePageable = repository.findPeopleByName(firstName, pageable);
+
+        var peopleWithLinks = peoplePageable.map(person -> {
+            var dto = personMapper.toDto(person);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        Link findAllLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(
+                                PersonController.class)
+                        .findAll(
+                                pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                String.valueOf(pageable.getSort())
+                        )
                 )
                 .withSelfRel();
         return assembler.toModel(peopleWithLinks, findAllLink);
