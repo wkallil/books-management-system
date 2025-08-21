@@ -2,9 +2,9 @@ package br.com.wkallil.integrationtests.constrollers.withxml;
 
 import br.com.wkallil.configs.TestConfigs;
 import br.com.wkallil.integrationtests.dto.PersonDTO;
+import br.com.wkallil.integrationtests.dto.pagedmodels.PagedModelPerson;
 import br.com.wkallil.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.restassured.builder.RequestSpecBuilder;
@@ -15,8 +15,6 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -246,6 +244,8 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
 
         var content = given(specification)
                 .accept(MediaType.APPLICATION_XML_VALUE)
+                .queryParam("page", 0)
+                .queryParam("size", 12)
                 .when()
                 .get()
                 .then()
@@ -255,7 +255,10 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        var people = objectMapper.readValue(content, new TypeReference<List<PersonDTO>>() {});
+        var pagedModel = objectMapper.readValue(content, PagedModelPerson.class);
+        assertNotNull(pagedModel);
+        assertNotNull(pagedModel.getContent());
+        var people = pagedModel.getContent();
 
         assertNotNull(people);
         assertTrue(people.size() > 1);
@@ -268,11 +271,11 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
         assertNotNull(firstPerson.getGender());
         assertNotNull(firstPerson.getEnabled());
 
-        assertEquals("Ana",firstPerson.getFirstName());
-        assertEquals("Silva",firstPerson.getLastName());
-        assertEquals("Rua das Flores, 123",firstPerson.getAddress());
-        assertEquals("Female",firstPerson.getGender());
-        assertTrue(firstPerson.getEnabled());
+        assertEquals("Abba",firstPerson.getFirstName());
+        assertEquals("Garfield",firstPerson.getLastName());
+        assertEquals("Apt 777",firstPerson.getAddress());
+        assertEquals("Male",firstPerson.getGender());
+        assertFalse(firstPerson.getEnabled());
 
         var fivePerson = people.get(5);
         assertNotNull(fivePerson.getId());
@@ -282,11 +285,11 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
         assertNotNull(fivePerson.getGender());
         assertNotNull(fivePerson.getEnabled());
 
-        assertEquals("Fábio",fivePerson.getFirstName());
-        assertEquals("Rodrigues",fivePerson.getLastName());
-        assertEquals("Rua Nova, 303",fivePerson.getAddress());
-        assertEquals("Male",fivePerson.getGender());
-        assertTrue(fivePerson.getEnabled());
+        assertEquals("Adelaide",fivePerson.getFirstName());
+        assertEquals("Sammon",fivePerson.getLastName());
+        assertEquals("13th Floor",fivePerson.getAddress());
+        assertEquals("Female",fivePerson.getGender());
+        assertFalse(fivePerson.getEnabled());
 
         assertNotEquals(firstPerson.getId(), fivePerson.getId());
         assertNotEquals(firstPerson.getFirstName(), fivePerson.getFirstName());

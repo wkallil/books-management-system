@@ -3,6 +3,7 @@ package br.com.wkallil.integrationtests.constrollers.withyaml;
 import br.com.wkallil.configs.TestConfigs;
 import br.com.wkallil.integrationtests.constrollers.withyaml.mapper.YAMLMapper;
 import br.com.wkallil.integrationtests.dto.PersonDTO;
+import br.com.wkallil.integrationtests.dto.pagedmodels.PagedModelYamlPerson;
 import br.com.wkallil.integrationtests.testcontainers.AbstractIntegrationTest;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
@@ -15,8 +16,6 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-
-import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -277,6 +276,8 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
                 )
                 .spec(specification)
                 .accept(MediaType.APPLICATION_YAML_VALUE)
+                .queryParam("page", 0)
+                .queryParam("size", 12)
                 .when()
                 .get()
                 .then()
@@ -284,9 +285,9 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
                 .contentType(MediaType.APPLICATION_YAML_VALUE)
                 .extract()
                 .body()
-                .as(PersonDTO[].class, objectMapper);
+                .as(PagedModelYamlPerson.class, objectMapper);
 
-        var people = Arrays.asList(content);
+        var people = content.getContent();
 
         assertNotNull(people);
         assertTrue(people.size() > 1);
@@ -299,11 +300,11 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
         assertNotNull(firstPerson.getGender());
         assertNotNull(firstPerson.getEnabled());
 
-        assertEquals("Ana",firstPerson.getFirstName());
-        assertEquals("Silva",firstPerson.getLastName());
-        assertEquals("Rua das Flores, 123",firstPerson.getAddress());
-        assertEquals("Female",firstPerson.getGender());
-        assertTrue(firstPerson.getEnabled());
+        assertEquals("Abba",firstPerson.getFirstName());
+        assertEquals("Garfield",firstPerson.getLastName());
+        assertEquals("Apt 777",firstPerson.getAddress());
+        assertEquals("Male",firstPerson.getGender());
+        assertFalse(firstPerson.getEnabled());
 
         var fivePerson = people.get(5);
         assertNotNull(fivePerson.getId());
@@ -313,11 +314,11 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
         assertNotNull(fivePerson.getGender());
         assertNotNull(fivePerson.getEnabled());
 
-        assertEquals("Fábio",fivePerson.getFirstName());
-        assertEquals("Rodrigues",fivePerson.getLastName());
-        assertEquals("Rua Nova, 303",fivePerson.getAddress());
-        assertEquals("Male",fivePerson.getGender());
-        assertTrue(fivePerson.getEnabled());
+        assertEquals("Adelaide",fivePerson.getFirstName());
+        assertEquals("Sammon",fivePerson.getLastName());
+        assertEquals("13th Floor",fivePerson.getAddress());
+        assertEquals("Female",fivePerson.getGender());
+        assertFalse(fivePerson.getEnabled());
 
         assertNotEquals(firstPerson.getId(), fivePerson.getId());
         assertNotEquals(firstPerson.getFirstName(), fivePerson.getFirstName());

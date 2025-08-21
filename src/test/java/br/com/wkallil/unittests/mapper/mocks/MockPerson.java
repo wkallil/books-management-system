@@ -18,7 +18,7 @@ public class MockPerson {
     }
     
     public List<Person> mockEntityList() {
-        List<Person> persons = new ArrayList<Person>();
+        List<Person> persons = new ArrayList<>();
         for (int i = 0; i < 14; i++) {
             persons.add(mockEntity(i));
         }
@@ -40,6 +40,7 @@ public class MockPerson {
         person.setGender(((number % 2)==0) ? "Male" : "Female");
         person.setId(number.longValue());
         person.setLastName("Last Name Test" + number);
+        person.setEnabled(true);
         return person;
     }
 
@@ -50,6 +51,7 @@ public class MockPerson {
         person.setGender(((number % 2)==0) ? "Male" : "Female");
         person.setId(number.longValue());
         person.setLastName("Last Name Test" + number);
+        person.setEnabled(true);
         return person;
     }
 
