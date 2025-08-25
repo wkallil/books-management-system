@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -127,10 +128,77 @@ class PersonServicesTest {
                 new PagedModel.PageMetadata(12, 0, list.size())
         );
 
-        when(assembler.toModel(any(Page.class), any(Link.class)))
+        when(assembler.toModel(ArgumentMatchers.any(), ArgumentMatchers.<Link>any()))
                 .thenReturn(pagedModel);
 
         var result = service.findAll(pageable);
+
+        assertNotNull(result);
+        assertNotNull(result.getContent());
+        assertFalse(result.getContent().isEmpty());
+
+        var personOne = result.getContent().stream().toList().get(1);
+
+        assertNotNull(personOne);
+        assertNotNull(personOne.getContent());
+        assertNotNull(personOne.getLinks());
+
+        assertEquals("Address Test1", personOne.getContent().getAddress());
+        assertEquals("First Name Test1", personOne.getContent().getFirstName());
+        assertEquals("Last Name Test1", personOne.getContent().getLastName());
+        assertEquals("Female", personOne.getContent().getGender());
+
+        var personFive = result.getContent().stream().toList().get(5);
+
+        assertNotNull(personFive);
+        assertNotNull(personFive.getContent());
+        assertNotNull(personFive.getLinks());
+
+        assertEquals("Address Test5", personFive.getContent().getAddress());
+        assertEquals("First Name Test5", personFive.getContent().getFirstName());
+        assertEquals("Last Name Test5", personFive.getContent().getLastName());
+        assertEquals("Female", personFive.getContent().getGender());
+
+        var personTen = result.getContent().stream().toList().get(10);
+
+        assertNotNull(personTen);
+        assertNotNull(personTen.getContent());
+        assertNotNull(personTen.getLinks());
+
+        assertEquals("Address Test10", personTen.getContent().getAddress());
+        assertEquals("First Name Test10", personTen.getContent().getFirstName());
+        assertEquals("Last Name Test10", personTen.getContent().getLastName());
+        assertEquals("Male", personTen.getContent().getGender());
+    }
+
+    @Test
+    void findPeopleByName() {
+        List<Person> list = input.mockEntityList();
+        List<PersonDTO> dtoList = input.mockDTOList();
+
+        Pageable pageable = PageRequest.of(0, 12, Sort.by(Sort.Direction.ASC, "firstName"));
+        Page<Person> page = new PageImpl<>(list, pageable, list.size());
+
+        when(repository.findPeopleByName("Address", pageable)).thenReturn(page);
+        when(mapper.toDto(any(Person.class))).thenAnswer(invocation -> {
+            Person person = invocation.getArgument(0);
+            int index = list.indexOf(person);
+            return dtoList.get(index);
+        });
+
+        List<EntityModel<PersonDTO>> entityModels = dtoList.stream()
+                .map(EntityModel::of)
+                .toList();
+
+        PagedModel<EntityModel<PersonDTO>> pagedModel = PagedModel.of(
+                entityModels,
+                new PagedModel.PageMetadata(12, 0, list.size())
+        );
+
+        when(assembler.toModel(ArgumentMatchers.any(), ArgumentMatchers.<Link>any()))
+                .thenReturn(pagedModel);
+
+        var result = service.findPeopleByName("Address",pageable);
 
         assertNotNull(result);
         assertNotNull(result.getContent());

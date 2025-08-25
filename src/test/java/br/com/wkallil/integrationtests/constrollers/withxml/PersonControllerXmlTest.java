@@ -294,6 +294,70 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
         assertNotEquals(firstPerson.getId(), fivePerson.getId());
         assertNotEquals(firstPerson.getFirstName(), fivePerson.getFirstName());
     }
+    @Test
+    @Order(6)
+    void findPeopleByName() throws JsonProcessingException {
+        specification = new RequestSpecBuilder()
+                .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ALLOWED)
+                .setBasePath("/api/v1/person/findPeopleByName")
+                .setPort(TestConfigs.SERVER_PORT)
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
+
+        var content = given(specification)
+                .accept(MediaType.APPLICATION_XML_VALUE)
+                .queryParam("page", 0)
+                .queryParam("size", 12)
+                .pathParam("firstName", "and")
+                .when()
+                .get("{firstName}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        var pagedModel = objectMapper.readValue(content, PagedModelPerson.class);
+        assertNotNull(pagedModel);
+        assertNotNull(pagedModel.getContent());
+        var people = pagedModel.getContent();
+
+        assertNotNull(people);
+        assertTrue(people.size() > 1);
+
+        var firstPerson = people.getFirst();
+        assertNotNull(firstPerson.getId());
+        assertNotNull(firstPerson.getFirstName());
+        assertNotNull(firstPerson.getLastName());
+        assertNotNull(firstPerson.getAddress());
+        assertNotNull(firstPerson.getGender());
+        assertNotNull(firstPerson.getEnabled());
+
+        assertEquals("Alessandra",firstPerson.getFirstName());
+        assertEquals("Gepson",firstPerson.getLastName());
+        assertEquals("Apt 1865",firstPerson.getAddress());
+        assertEquals("Female",firstPerson.getGender());
+        assertTrue(firstPerson.getEnabled());
+
+        var fivePerson = people.get(5);
+        assertNotNull(fivePerson.getId());
+        assertNotNull(fivePerson.getFirstName());
+        assertNotNull(fivePerson.getLastName());
+        assertNotNull(fivePerson.getAddress());
+        assertNotNull(fivePerson.getGender());
+        assertNotNull(fivePerson.getEnabled());
+
+        assertEquals("Bertrand",fivePerson.getFirstName());
+        assertEquals("Duferie",fivePerson.getLastName());
+        assertEquals("Apt 123",fivePerson.getAddress());
+        assertEquals("Male",fivePerson.getGender());
+        assertFalse(fivePerson.getEnabled());
+
+        assertNotEquals(firstPerson.getId(), fivePerson.getId());
+        assertNotEquals(firstPerson.getFirstName(), fivePerson.getFirstName());
+    }
 
 
     private void mockPersonDTO() {

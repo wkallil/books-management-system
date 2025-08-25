@@ -224,6 +224,66 @@ class PersonControllerJsonTest extends AbstractIntegrationTest {
 
     @Test
     @Order(5)
+    void findPeopleByName() throws JsonProcessingException {
+        specification = new RequestSpecBuilder()
+                .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ALLOWED)
+                .setBasePath("/api/v1/person/findPeopleByName")
+                .setPort(TestConfigs.SERVER_PORT)
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
+
+        var content = given(specification)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .pathParam("firstName", "and")
+                .when()
+                .get("{firstName}")
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        var wrapper = objectMapper.readValue(content, WrapperPersonDTO.class);
+        var people = wrapper.getEmbedded().getPeople();
+
+        assertNotNull(people);
+        assertTrue(people.size() > 1);
+
+        var firstPerson = people.getFirst();
+        assertNotNull(firstPerson.getId());
+        assertNotNull(firstPerson.getFirstName());
+        assertNotNull(firstPerson.getLastName());
+        assertNotNull(firstPerson.getAddress());
+        assertNotNull(firstPerson.getGender());
+        assertNotNull(firstPerson.getEnabled());
+
+        assertEquals("Alessandra",firstPerson.getFirstName());
+        assertEquals("Gepson",firstPerson.getLastName());
+        assertEquals("Apt 1865",firstPerson.getAddress());
+        assertEquals("Female",firstPerson.getGender());
+        assertTrue(firstPerson.getEnabled());
+
+        var fivePerson = people.get(5);
+        assertNotNull(fivePerson.getId());
+        assertNotNull(fivePerson.getFirstName());
+        assertNotNull(fivePerson.getLastName());
+        assertNotNull(fivePerson.getAddress());
+        assertNotNull(fivePerson.getGender());
+        assertNotNull(fivePerson.getEnabled());
+
+        assertEquals("Bertrand",fivePerson.getFirstName());
+        assertEquals("Duferie",fivePerson.getLastName());
+        assertEquals("Apt 123",fivePerson.getAddress());
+        assertEquals("Male",fivePerson.getGender());
+        assertFalse(fivePerson.getEnabled());
+
+        assertNotEquals(firstPerson.getId(), fivePerson.getId());
+        assertNotEquals(firstPerson.getFirstName(), fivePerson.getFirstName());
+    }
+
+    @Test
+    @Order(6)
     void findAll() throws JsonProcessingException {
         specification = new RequestSpecBuilder()
                 .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ALLOWED)
