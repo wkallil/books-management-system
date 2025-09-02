@@ -7,6 +7,8 @@ import br.com.wkallil.exceptions.BadRequestException;
 import br.com.wkallil.exceptions.FileStorageException;
 import br.com.wkallil.exceptions.RequiredObjectIsNullException;
 import br.com.wkallil.exceptions.ResourceNotFoundException;
+import br.com.wkallil.file.exporter.contract.FileExporter;
+import br.com.wkallil.file.exporter.factory.FileExporterFactory;
 import br.com.wkallil.file.importer.contract.FileImporter;
 import br.com.wkallil.file.importer.factory.FileImporterFactory;
 import br.com.wkallil.mapper.PersonMapper;
@@ -16,6 +18,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -48,6 +51,9 @@ public class PersonServices {
     FileImporterFactory importer;
 
     @Autowired
+    FileExporterFactory exporter;
+
+    @Autowired
     PagedResourcesAssembler<PersonDTO> assembler;
 
     public PersonDTO findById(Long id) {
@@ -68,6 +74,22 @@ public class PersonServices {
         var peoplePageable = repository.findAll(pageable);
 
         return buildPagedModel(pageable, peoplePageable);
+    }
+
+    public Resource exportPage(Pageable pageable, String acceptHeader) {
+        logger.info("Exporting a people page!");
+
+        var peoplePageable = repository.findAll(pageable)
+                .map(
+                        person -> personMapper.toDto(person))
+                .getContent();
+
+        try {
+            FileExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exporterFile(peoplePageable);
+        } catch (Exception e) {
+            throw new RuntimeException("Error during file export!", e);
+        }
     }
 
     public PagedModel<EntityModel<PersonDTO>> findPeopleByName(String firstName, Pageable pageable) {
@@ -124,7 +146,7 @@ public class PersonServices {
 
         if (file.isEmpty()) throw new BadRequestException("Please set a Valid File");
 
-        try(InputStream inputStream = file.getInputStream()) {
+        try (InputStream inputStream = file.getInputStream()) {
             String filename = Optional.ofNullable(file.getOriginalFilename())
                     .orElseThrow(() -> new BadRequestException("File name cannot be null!"));
 
@@ -200,5 +222,6 @@ public class PersonServices {
         dto.add(linkTo(methodOn(PersonController.class).findPeopleByName(dto.getFirstName(), 0, 12, "asc")).withRel("findPeopleByName").withType("GET"));
         dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
+        dto.add(linkTo(methodOn(PersonController.class).exportPage(0, 12, "asc", null)).withRel("exportPage").withType("GET").withType("Export People"));
     }
 }
