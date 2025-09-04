@@ -4,6 +4,7 @@ import br.com.wkallil.exceptions.BadRequestException;
 import br.com.wkallil.file.exporter.MediaTypes;
 import br.com.wkallil.file.exporter.contract.FileExporter;
 import br.com.wkallil.file.exporter.impl.CsvExporter;
+import br.com.wkallil.file.exporter.impl.PdfExporter;
 import br.com.wkallil.file.exporter.impl.XlsxExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ public class FileExporterFactory {
         } else if (acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_CSV_VALUE)) {
             logger.info("CSV Importer selected");
             return context.getBean(CsvExporter.class);
+        }  else if (acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_PDF_VALUE)) {
+            logger.info("PDF Importer selected");
+            return context.getBean(PdfExporter.class);
         } else {
             logger.error("Invalid File Extension");
             throw new BadRequestException("Invalid File Extension");
