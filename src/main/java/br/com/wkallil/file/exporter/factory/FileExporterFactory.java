@@ -2,7 +2,7 @@ package br.com.wkallil.file.exporter.factory;
 
 import br.com.wkallil.exceptions.BadRequestException;
 import br.com.wkallil.file.exporter.MediaTypes;
-import br.com.wkallil.file.exporter.contract.FileExporter;
+import br.com.wkallil.file.exporter.contract.PersonExporter;
 import br.com.wkallil.file.exporter.impl.CsvExporter;
 import br.com.wkallil.file.exporter.impl.PdfExporter;
 import br.com.wkallil.file.exporter.impl.XlsxExporter;
@@ -20,7 +20,7 @@ public class FileExporterFactory {
     @Autowired
     private ApplicationContext context;
 
-    public FileExporter getExporter(String acceptHeader) throws BadRequestException {
+    public PersonExporter getExporter(String acceptHeader) throws BadRequestException {
         if (acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_XLSX_VALUE)) {
             logger.info("XLSX Importer selected");
             return context.getBean(XlsxExporter.class);

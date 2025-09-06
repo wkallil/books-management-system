@@ -7,7 +7,7 @@ import br.com.wkallil.exceptions.BadRequestException;
 import br.com.wkallil.exceptions.FileStorageException;
 import br.com.wkallil.exceptions.RequiredObjectIsNullException;
 import br.com.wkallil.exceptions.ResourceNotFoundException;
-import br.com.wkallil.file.exporter.contract.FileExporter;
+import br.com.wkallil.file.exporter.contract.PersonExporter;
 import br.com.wkallil.file.exporter.factory.FileExporterFactory;
 import br.com.wkallil.file.importer.contract.FileImporter;
 import br.com.wkallil.file.importer.factory.FileImporterFactory;
@@ -80,7 +80,7 @@ public class PersonServices {
         var dto = personMapper.toDto(person);
 
         try {
-            FileExporter exporter = this.exporter.getExporter(acceptHeader);
+            PersonExporter exporter = this.exporter.getExporter(acceptHeader);
             return exporter.exporterPerson(dto);
         } catch (Exception e) {
             throw new RuntimeException("Error during file export!", e);
@@ -104,8 +104,8 @@ public class PersonServices {
                 .getContent();
 
         try {
-            FileExporter exporter = this.exporter.getExporter(acceptHeader);
-            return exporter.exporterFile(peoplePageable);
+            PersonExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exporterPeople(peoplePageable);
         } catch (Exception e) {
             throw new RuntimeException("Error during file export!", e);
         }

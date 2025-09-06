@@ -2,7 +2,7 @@ package br.com.wkallil.file.exporter.impl;
 
 
 import br.com.wkallil.data.dto.v1.PersonDTO;
-import br.com.wkallil.file.exporter.contract.FileExporter;
+import br.com.wkallil.file.exporter.contract.PersonExporter;
 import br.com.wkallil.services.QRCodeService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -16,13 +16,13 @@ import java.io.InputStream;
 import java.util.*;
 
 @Component
-public class PdfExporter implements FileExporter {
+public class PdfExporter implements PersonExporter {
 
     @Autowired
     private QRCodeService service;
 
     @Override
-    public Resource exporterFile(List<PersonDTO> people) throws Exception {
+    public Resource exporterPeople(List<PersonDTO> people) throws Exception {
         InputStream inputStream = getClass().getResourceAsStream("/templates/people.jrxml");
         if (inputStream == null) {
             throw new RuntimeException("template not found: /templates/people.jrxml");

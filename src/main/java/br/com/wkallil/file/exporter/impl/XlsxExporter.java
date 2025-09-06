@@ -1,7 +1,7 @@
 package br.com.wkallil.file.exporter.impl;
 
 import br.com.wkallil.data.dto.v1.PersonDTO;
-import br.com.wkallil.file.exporter.contract.FileExporter;
+import br.com.wkallil.file.exporter.contract.PersonExporter;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ByteArrayResource;
@@ -12,9 +12,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 @Component
-public class XlsxExporter implements FileExporter {
+public class XlsxExporter implements PersonExporter {
     @Override
-    public Resource exporterFile(List<PersonDTO> people) throws Exception {
+    public Resource exporterPeople(List<PersonDTO> people) throws Exception {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("People");
 

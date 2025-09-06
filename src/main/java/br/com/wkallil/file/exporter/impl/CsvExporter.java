@@ -1,7 +1,7 @@
 package br.com.wkallil.file.exporter.impl;
 
 import br.com.wkallil.data.dto.v1.PersonDTO;
-import br.com.wkallil.file.exporter.contract.FileExporter;
+import br.com.wkallil.file.exporter.contract.PersonExporter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.core.io.ByteArrayResource;
@@ -14,9 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Component
-public class CsvExporter implements FileExporter {
+public class CsvExporter implements PersonExporter {
     @Override
-    public Resource exporterFile(List<PersonDTO> people) throws Exception {
+    public Resource exporterPeople(List<PersonDTO> people) throws Exception {
         ByteArrayOutputStream outputStream  = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
 
