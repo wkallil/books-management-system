@@ -68,6 +68,25 @@ public class PersonServices {
         return dto;
     }
 
+
+    public Resource exportPerson(Long id, String acceptHeader) {
+        logger.info("Exporting data of one Person!");
+
+        var person = repository.findById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("No records found for this ID!")
+                );
+
+        var dto = personMapper.toDto(person);
+
+        try {
+            FileExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exporterPerson(dto);
+        } catch (Exception e) {
+            throw new RuntimeException("Error during file export!", e);
+        }
+    }
+
     public PagedModel<EntityModel<PersonDTO>> findAll(Pageable pageable) {
         logger.info("Finding all people!");
 
