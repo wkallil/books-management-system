@@ -77,3 +77,4 @@ blog/bin/
 hs_err_pid*
 /.metadata/
 
+/src/main/resources/db/migration/V16__Insert_Data_In_Users.sql
