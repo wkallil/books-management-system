@@ -11,7 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 @Service
-public class QRCodeService {
+public class QRCodeServices {
 
     public InputStream generateQRCode(String url, int width, int height) throws Exception {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();

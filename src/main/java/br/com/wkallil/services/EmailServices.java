@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Service
 
-public class EmailService {
+public class EmailServices {
 
     @Autowired
     private EmailSender emailSender;
