@@ -4,6 +4,11 @@ cors:
   originPatterns: "http://localhost:8080,http://localhost:3000"
 file:
   upload-dir: ./uploadDir
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET_KEY}
+      expire-length: 3600000 # 1 hour
 email:
   subject: "Default Subject"
   message: "Default Message"
