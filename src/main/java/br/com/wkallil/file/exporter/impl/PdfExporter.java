@@ -3,7 +3,7 @@ package br.com.wkallil.file.exporter.impl;
 
 import br.com.wkallil.data.dto.v1.PersonDTO;
 import br.com.wkallil.file.exporter.contract.PersonExporter;
-import br.com.wkallil.services.QRCodeService;
+import br.com.wkallil.services.QRCodeServices;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.*;
 public class PdfExporter implements PersonExporter {
 
     @Autowired
-    private QRCodeService service;
+    private QRCodeServices service;
 
     @Override
     public Resource exporterPeople(List<PersonDTO> people) throws Exception {

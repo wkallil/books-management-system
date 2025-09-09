@@ -3,7 +3,7 @@ package br.com.wkallil.constrollers;
 
 import br.com.wkallil.constrollers.docs.EmailControllerDocs;
 import br.com.wkallil.data.dto.v1.request.EmailRequestDTO;
-import br.com.wkallil.services.EmailService;
+import br.com.wkallil.services.EmailServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class EmailController implements EmailControllerDocs {
 
     @Autowired
-    private EmailService service;
+    private EmailServices service;
 
     @PostMapping
     @Override
