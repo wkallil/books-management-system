@@ -1,7 +1,6 @@
 package br.com.wkallil.constrollers;
 
 import br.com.wkallil.data.dto.v1.security.AccountCredentialsDTO;
-import br.com.wkallil.data.dto.v1.security.TokenDTO;
 import br.com.wkallil.services.AuthServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,10 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Authentication Endpoint")
 @RestController
@@ -37,6 +33,27 @@ public class AuthController {
 
         return ResponseEntity.ok().body(token);
     }
+
+    @Operation(summary = "Refreshes a token for a given username")
+    @PutMapping("/refresh/{username}")
+    public ResponseEntity<?> refreshToken(@PathVariable("username") String username, @RequestHeader("Authorization") String refreshToken) {
+        if (parametersAreInvalids(username, refreshToken)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
+        }
+
+        var token = service.refreshToken(username, refreshToken);
+
+        if (token == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
+        }
+
+        return ResponseEntity.ok().body(token);
+    }
+
+    private boolean parametersAreInvalids(String username, String refreshToken) {
+        return StringUtils.isBlank(username) || StringUtils.isBlank(refreshToken);
+    }
+
 
     private static boolean credentialsIsInvalid(AccountCredentialsDTO credentialsDTO) {
         return credentialsDTO == null || StringUtils.isBlank(credentialsDTO.getPassword()) || StringUtils.isBlank(credentialsDTO.getUsername());

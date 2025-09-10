@@ -44,4 +44,16 @@ public class AuthServices {
 
         return ResponseEntity.ok(tokenResponse);
     }
+
+    public ResponseEntity<TokenDTO> refreshToken(String username,String refreshToken) {
+        var user = repository.findByUsername(username);
+        TokenDTO tokenResponse;
+
+        if (user != null) {
+            tokenResponse = tokenProvider.refreshToken(refreshToken);
+        } else {
+            throw new UsernameNotFoundException("Username " + username + " not found!");
+        }
+        return ResponseEntity.ok(tokenResponse);
+    }
 }
