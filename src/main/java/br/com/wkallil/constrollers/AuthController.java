@@ -1,8 +1,8 @@
 package br.com.wkallil.constrollers;
 
+import br.com.wkallil.constrollers.docs.AuthControllerDocs;
 import br.com.wkallil.data.dto.v1.security.AccountCredentialsDTO;
 import br.com.wkallil.services.AuthServices;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Authentication Endpoint")
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
 
     @Autowired
     AuthServices service;
 
-    @Operation(summary = "Authenticates a user and returns a token")
     @PostMapping("/signin")
+    @Override
     public ResponseEntity<?> signin(@RequestBody AccountCredentialsDTO credentialsDTO) {
         if (credentialsIsInvalid(credentialsDTO)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
@@ -35,8 +35,8 @@ public class AuthController {
         return ResponseEntity.ok().body(token);
     }
 
-    @Operation(summary = "Refreshes a token for a given username")
     @PutMapping("/refresh/{username}")
+    @Override
     public ResponseEntity<?> refreshToken(@PathVariable("username") String username, @RequestHeader("Authorization") String refreshToken) {
         if (parametersAreInvalids(username, refreshToken)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
@@ -64,6 +64,7 @@ public class AuthController {
                     MediaType.APPLICATION_YAML_VALUE
             }
     )
+    @Override
     public AccountCredentialsDTO create(@RequestBody AccountCredentialsDTO credentials) {
         return service.create(credentials);
     }
