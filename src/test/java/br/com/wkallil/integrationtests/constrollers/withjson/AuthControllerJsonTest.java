@@ -5,6 +5,7 @@ import br.com.wkallil.integrationtests.dto.AccountCredentialsDTO;
 import br.com.wkallil.integrationtests.dto.TokenDTO;
 import br.com.wkallil.integrationtests.testcontainers.AbstractIntegrationTest;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
@@ -13,6 +14,12 @@ import static io.restassured.RestAssured.given;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AuthControllerJsonTest extends AbstractIntegrationTest {
+
+    @Value("${test.username}")
+    private String username;
+
+    @Value("${test.password}")
+    private String password;
 
     private static TokenDTO tokenDTO;
 
@@ -25,7 +32,7 @@ class AuthControllerJsonTest extends AbstractIntegrationTest {
     @Test
     @Order(1)
     void signin() {
-        AccountCredentialsDTO credentials = new AccountCredentialsDTO("test", "admin123");
+        AccountCredentialsDTO credentials = new AccountCredentialsDTO(username, password);
 
         tokenDTO = given()
                 .basePath("/auth/signin")
