@@ -207,6 +207,8 @@ public class PersonServices {
         entity.setLastName(person.getLastName());
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
+        entity.setPhotoUrl(person.getPhotoUrl());
+        entity.setProfileUrl(person.getProfileUrl());
 
         var dto = personMapper.toDto(repository.save(entity));
         addHateoasLinks(dto);
