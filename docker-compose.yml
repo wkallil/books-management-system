@@ -32,6 +32,8 @@ services:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       EMAIL_USERNAME: ${EMAIL_USERNAME}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      TEST_USERNAME: ${TEST_USERNAME}
+      TEST_PASSWORD: ${TEST_PASSWORD}
     ports:
       - 8500:8500
     depends_on:
