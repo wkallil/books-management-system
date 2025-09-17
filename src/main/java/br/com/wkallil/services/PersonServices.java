@@ -207,6 +207,7 @@ public class PersonServices {
         entity.setLastName(person.getLastName());
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
+        entity.setEnabled(person.getEnabled());
         entity.setPhotoUrl(person.getPhotoUrl());
         entity.setProfileUrl(person.getProfileUrl());
 
