@@ -44,6 +44,7 @@ jobs:
         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
         TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+        SPRING_FLYWAY_CLEAN_DISABLED: "false"
       run: mvn clean flyway:clean flyway:migrate test
 
     - name: Build Application .jar
