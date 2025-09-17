@@ -18,7 +18,6 @@ services:
   books-management-system:
     image: wkallil/books-management-system
     restart: always
-    build: .
     working_dir: /books-management-system
     environment:
       TZ: America/Sao_Paulo
@@ -41,9 +40,21 @@ services:
     networks:
       - wkallil-network
 
+  portainer:
+    image: portainer/portainer-ce:latest
+    restart: always
+    ports:
+      - 9000:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - wkallil-network
+
 networks:
   wkallil-network:
     driver: bridge
 
 volumes:
   mysql_data:
+  portainer_data:
