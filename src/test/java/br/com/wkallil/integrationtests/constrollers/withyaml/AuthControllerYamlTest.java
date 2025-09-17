@@ -10,6 +10,7 @@ import io.restassured.config.EncoderConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
@@ -18,6 +19,12 @@ import static io.restassured.RestAssured.given;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AuthControllerYamlTest extends AbstractIntegrationTest {
+
+    @Value("${test.username}")
+    private String username;
+
+    @Value("${test.password}")
+    private String password;
 
     private static YAMLMapper objectMapper;
     private static TokenDTO tokenDTO;
@@ -32,7 +39,7 @@ class AuthControllerYamlTest extends AbstractIntegrationTest {
     @Test
     @Order(1)
     void signin() throws JsonProcessingException {
-        AccountCredentialsDTO credentials = new AccountCredentialsDTO("test", "admin123");
+        AccountCredentialsDTO credentials = new AccountCredentialsDTO(username, password);
 
         tokenDTO= given()
                 .config(RestAssuredConfig.config()

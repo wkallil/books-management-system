@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 
@@ -16,6 +17,12 @@ import static io.restassured.RestAssured.given;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AuthControllerXmlTest extends AbstractIntegrationTest {
+
+    @Value("${test.username}")
+    private String username;
+
+    @Value("${test.password}")
+    private String password;
 
     private static XmlMapper objectMapper;
     private static TokenDTO tokenDTO;
@@ -31,7 +38,7 @@ class AuthControllerXmlTest extends AbstractIntegrationTest {
     @Test
     @Order(1)
     void signin() throws JsonProcessingException {
-        AccountCredentialsDTO credentials = new AccountCredentialsDTO("test", "admin123");
+        AccountCredentialsDTO credentials = new AccountCredentialsDTO(username, password);
 
         var content = given()
                 .basePath("/auth/signin")
