@@ -34,13 +34,6 @@ jobs:
         java-version: '21'
         distribution: 'adopt'
         cache: maven
-      env:
-        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-        DB_MYSQL_PASSWORD: root
-        EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
-        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-        TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
-        TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
     - name: Build Application .jar
       working-directory: ./
@@ -51,6 +44,9 @@ jobs:
         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
         TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+        SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/books_management_system?useTimezone=true&serverTimezone=UTC
+        SPRING_DATASOURCE_USERNAME: root
+        SPRING_DATASOURCE_PASSWORD: root
       run: mvn clean package
 
     - name: Docker Compose Build
