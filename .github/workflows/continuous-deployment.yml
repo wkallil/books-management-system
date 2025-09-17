@@ -44,7 +44,7 @@ jobs:
         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
         TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
-      run: mvn clean test
+      run: mvn clean flyway:clean flyway:migrate test
 
     - name: Build Application .jar
       working-directory: ./
