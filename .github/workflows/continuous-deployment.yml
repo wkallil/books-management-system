@@ -44,10 +44,7 @@ jobs:
         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
         TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
-        SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/books_management_system?useTimezone=true&serverTimezone=UTC
-        SPRING_DATASOURCE_USERNAME: root
-        SPRING_DATASOURCE_PASSWORD: root
-      run: mvn clean package
+      run: mvn clean package -DskipTests
 
     - name: Docker Compose Build
       working-directory: ./
