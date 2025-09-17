@@ -101,7 +101,7 @@ public class BooksServices {
     public BooksDTO update(BooksDTO books) {
 
         if (books == null) {
-            logger.info("Book is null!");
+            logger.info("Book is null!!");
             throw new RequiredObjectIsNullException();
         }
 
