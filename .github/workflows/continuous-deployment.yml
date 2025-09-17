@@ -34,6 +34,13 @@ jobs:
         java-version: '21'
         distribution: 'adopt'
         cache: maven
+      env:
+        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+        DB_MYSQL_PASSWORD: root
+        EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+        TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
     - name: Build Application .jar
       working-directory: ./
