@@ -1,5 +1,5 @@
 server:
-  port: 8500
+  port: 8888
 cors:
   originPatterns: "http://localhost:8080,http://localhost:3000,http://localhost:8500"
 file:
