@@ -105,6 +105,14 @@ jobs:
         docker push ${{ secrets.REGISTRY_INFO }}/books-management-system:latest
         docker push ${{ secrets.REGISTRY_INFO }}/books-management-system:${{ github.run_id }}
 
+    - name: Deploy to Google Cloud Run
+      run: |
+        gcloud run deploy books-management-system \
+          --image ${{ secrets.REGISTRY_INFO }}/books-management-system:latest \
+          --region europe-west1 \
+          --platform managed \
+          --allow-unauthenticated
+
     - name: Push to Docker Hub Container
       run: |
         docker tag ${{ secrets.DOCKER_USERNAME }}/books-management-system:latest ${{ secrets.DOCKER_USERNAME }}/books-management-system:${{ github.run_id }}
