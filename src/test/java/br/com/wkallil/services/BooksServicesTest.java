@@ -99,7 +99,7 @@ class BooksServicesTest {
 
         assertEquals("Author Test1", result.getAuthor());
         assertEquals("Title Test1", result.getTitle());
-        assertEquals("Launch Date Test" + new Date(), result.getLaunchDate());
+        assertTrue(result.getLaunchDate().startsWith("Launch Date Test"));
         assertEquals(11.0, result.getPrice());
 
     }
@@ -175,7 +175,7 @@ class BooksServicesTest {
 
         assertEquals("Author Test1", booksOne.getContent().getAuthor());
         assertEquals("Title Test1", booksOne.getContent().getTitle());
-        assertEquals("Launch Date Test" + new Date(), booksOne.getContent().getLaunchDate());
+        assertTrue(booksOne.getContent().getLaunchDate().startsWith("Launch Date Test"));
         assertEquals(11.0, booksOne.getContent().getPrice());
 
         var booksFive = result.getContent().stream().toList().get(5);
@@ -216,7 +216,7 @@ class BooksServicesTest {
 
         assertEquals("Author Test5", booksFive.getContent().getAuthor());
         assertEquals("Title Test5", booksFive.getContent().getTitle());
-        assertEquals("Launch Date Test" + new Date(), booksFive.getContent().getLaunchDate());
+        assertTrue(booksFive.getContent().getLaunchDate().startsWith("Launch Date Test"));
         assertEquals(15.0, booksFive.getContent().getPrice());
 
         var booksTen = result.getContent().stream().toList().get(10);
@@ -257,7 +257,7 @@ class BooksServicesTest {
 
         assertEquals("Author Test10", booksTen.getContent().getAuthor());
         assertEquals("Title Test10", booksTen.getContent().getTitle());
-        assertEquals("Launch Date Test" + new Date(), booksTen.getContent().getLaunchDate());
+        assertTrue(booksTen.getContent().getLaunchDate().startsWith("Launch Date Test"));
         assertEquals(20.0, booksTen.getContent().getPrice());
     }
 
@@ -325,7 +325,7 @@ class BooksServicesTest {
 
         assertEquals("Author Test1", result.getAuthor());
         assertEquals("Title Test1", result.getTitle());
-        assertEquals("Launch Date Test" + new Date(), result.getLaunchDate());
+        assertTrue(result.getLaunchDate().startsWith("Launch Date Test"));
         assertEquals(11.0, result.getPrice());
     }
 
@@ -389,7 +389,7 @@ class BooksServicesTest {
 
         assertEquals("Author Test1", result.getAuthor());
         assertEquals("Title Test1", result.getTitle());
-        assertEquals("Launch Date Test" + new Date(), result.getLaunchDate());
+        assertTrue(result.getLaunchDate().startsWith("Launch Date Test"));
         assertEquals(11.0, result.getPrice());
     }
 
