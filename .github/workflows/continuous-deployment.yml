@@ -102,8 +102,8 @@ jobs:
         docker tag ${{ secrets.DOCKER_USERNAME }}/books-management-system:latest ${{ secrets.REGISTRY_INFO }}/books-management-system:latest
         docker tag ${{ secrets.DOCKER_USERNAME }}/books-management-system:latest ${{ secrets.REGISTRY_INFO }}/books-management-system:${{ github.run_id }}
         
-        docker push {{ secrets.REGISTRY_INFO }}/books-management-system:latest
-        docker push {{ secrets.REGISTRY_INFO }}/books-management-system:${{ github.run_id }}
+        docker push ${{ secrets.REGISTRY_INFO }}/books-management-system:latest
+        docker push ${{ secrets.REGISTRY_INFO }}/books-management-system:${{ github.run_id }}
 
     - name: Push to Docker Hub Container
       run: |
