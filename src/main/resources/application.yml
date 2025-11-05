@@ -17,9 +17,7 @@ spring:
     name: books-management-system
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # url: jdbc:mysql://localhost:3306/books_management_system?useTimezone=true&serverTimezone=UTC
-    url: jdbc:mysql://136.119.75.200/books_management_system?useTimezone=true&serverTimezone=UTC
-    # url: ${JDBC_URL}
+    url: jdbc:mysql://localhost:3306/books_management_system?useTimezone=true&serverTimezone=UTC
     username: root
     password: ${DB_MYSQL_PASSWORD}
   jpa:
